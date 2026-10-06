@@ -163,13 +163,13 @@ The verifier is intentionally **not** an LLM. Keeping the final decision determi
 
 | Layer | Choice |
 |---|---|
-| Language | Python 3.11+ |
+| Language | Python 3.14+ |
 | API | FastAPI |
 | GitHub | GitHub App (Webhooks, Checks API, Pull Requests API) |
 | Parsing | tree-sitter |
 | Sandbox | Docker SDK (gVisor or Firecracker as a hardening option) |
 | Queue | Redis |
-| Storage | PostgreSQL |
+| Storage | PostgreSQL 18 (local installation) |
 | LLM access | Any provider with tool calling, behind a thin adapter |
 | Dashboard | Minimal web UI for run traces |
 | Testing | pytest |
@@ -210,20 +210,21 @@ quorum/
 
 ### Prerequisites
 
-- Python 3.11+
+- Python 3.14+
 - Docker (running locally)
-- Redis and PostgreSQL (provided via `docker-compose`)
+- PostgreSQL 18 (installed locally)
+- Redis (provided via `docker-compose`)
 - A GitHub account where you can create a GitHub App
 - An API key for your chosen LLM provider
 - A tunnel such as `ngrok` for receiving webhooks during local development
 
 ### 1. Clone and install
 
-```bash
+```powershell
 git clone https://github.com/<your-username>/quorum.git
-cd quorum
-python -m venv .venv
-source .venv/bin/activate
+cd quorum/quorum-server
+py -V:3.14 -m venv venv
+.\venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
 ```
 
@@ -260,9 +261,16 @@ cp .env.example .env
 
 ### 4. Build sandbox images and start services
 
-```bash
+```powershell
+# Build sandbox image (from project root)
+cd ..
 docker build -t quorum-sandbox-python docker/python
+
+# Start Redis
 docker compose up -d
+
+# Start the API server
+cd quorum-server
 uvicorn app.api.main:app --reload
 ```
 
