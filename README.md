@@ -169,7 +169,7 @@ The verifier is intentionally **not** an LLM. Keeping the final decision determi
 | Parsing | tree-sitter |
 | Sandbox | Docker SDK (gVisor or Firecracker as a hardening option) |
 | Queue | Redis |
-| Storage | PostgreSQL 18 (local installation) |
+| Storage | PostgreSQL |
 | LLM access | Any provider with tool calling, behind a thin adapter |
 | Dashboard | Minimal web UI for run traces |
 | Testing | pytest |
@@ -212,8 +212,7 @@ quorum/
 
 - Python 3.14+
 - Docker (running locally)
-- PostgreSQL 18 (installed locally)
-- Redis (provided via `docker-compose`)
+- Redis and PostgreSQL (provided via `docker-compose`)
 - A GitHub account where you can create a GitHub App
 - An API key for your chosen LLM provider
 - A tunnel such as `ngrok` for receiving webhooks during local development
@@ -266,7 +265,7 @@ cp .env.example .env
 cd ..
 docker build -t quorum-sandbox-python docker/python
 
-# Start Redis
+# Start Redis and PostgreSQL
 docker compose up -d
 
 # Start the API server
