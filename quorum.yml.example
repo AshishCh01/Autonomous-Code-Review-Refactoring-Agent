@@ -1,0 +1,22 @@
+language: python
+test_command: "pytest"
+lint_command: "ruff check ."
+type_check_command: "mypy ."
+reviewers:
+  - "bug_finder"
+  - "security_reviewer"
+thresholds:
+  min_confidence: 0.8
+  max_comments_per_pr: 5
+budgets:
+  max_repair_attempts: 3
+  max_tokens_per_pr: 100000
+  max_seconds_per_pr: 600
+sandbox:
+  network: false
+  cpu: "1.0"
+  memory: "1g"
+  timeout: 300
+ignore_paths:
+  - "docs/*"
+  - "**/*.md"
